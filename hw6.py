@@ -7,11 +7,14 @@ import csv
 assert len(sys.argv) == 2
 inputFileName = sys.argv[1]
 
+actorIdRoot = "actor_id_idx/root.txt"
+movieRolesRoot = "movieroles_ma_idx.txt"
+
 with open inputFileName as inputFile:
 	linereader = csv.reader(inputFile, delimiter = "\n")
 	for line_ in linereader:
 		line = line_[0].split(",")
 		[movieIdLow, movieIdHigh, actorIdLow, actorIdHigh] = line
-		#queryDB1(root, movieIdLow, movieIdHigh, actorIdLow, actorIdHigh)
-		#queryDB2(root, movieIdLow, movieIdHigh, actorIdLow, actorIdHigh)
-		#queryDB3(root, movieIdLow, movieIdHigh, actorIdLow, actorIdHigh)
+		#queryDB1(actorIdRoot, movieRolesRoot, movieIdLow, movieIdHigh, actorIdLow, actorIdHigh)
+		#queryDB2(actorIdRoot, movieRolesRoot, movieIdLow, movieIdHigh, actorIdLow, actorIdHigh)
+		#queryDB3(actorIdRoot, movieRolesRoot, movieIdLow, movieIdHigh, actorIdLow, actorIdHigh)
