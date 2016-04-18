@@ -1,2 +1,4 @@
 Brian Kovacik
 Ben West
+
+Given the 4 data folders in the same folder, usage is: python hw6.py <input file name> <method number>
