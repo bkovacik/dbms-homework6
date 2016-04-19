@@ -12,17 +12,18 @@ movieRolesRoot = "movieroles_ma_idx/root.txt"
 with open(inputFileName) as inputFile:
   for line in inputFile:
     print ""
+    print line
     line = line.rstrip().split(",")
 
     [movieIdLow, movieIdHigh, actorIdLow, actorIdHigh] = line
     if movieIdLow == '*':
-      movieIdLow = -1
+      movieIdLow = "-1"
     if actorIdLow == '*':
-      actorIdLow = -1
+      actorIdLow = "-1"
     if movieIdHigh == '*':
-      movieIdHigh = sys.maxint
+      movieIdHigh = str(sys.maxint)
     if actorIdHigh == '*':
-      actorIdHigh = sys.maxint
+      actorIdHigh = str(sys.maxint)
 
     [pagesRead, actors] = queryDB1(movieRolesRoot, int(movieIdLow), int(movieIdHigh), int(actorIdLow), int(actorIdHigh))
     actorIds = set()
@@ -32,6 +33,8 @@ with open(inputFileName) as inputFile:
       actorIds.add(actorId)
       actorPages.add(pageNumber)
     print actorIds
+
+    #method 1
 
     #method 2
     method2PagesRead = 0
