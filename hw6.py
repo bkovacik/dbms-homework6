@@ -11,6 +11,7 @@ movieRolesRoot = "movieroles_ma_idx/root.txt"
 
 with open(inputFileName) as inputFile:
   for line in inputFile:
+    print ""
     line = line.rstrip().split(",")
 
     [movieIdLow, movieIdHigh, actorIdLow, actorIdHigh] = line
@@ -30,7 +31,7 @@ with open(inputFileName) as inputFile:
     for [actorId, pageNumber] in actors:
       actorIds.add(actorId)
       actorPages.add(pageNumber)
-    #print actorIds
+    print actorIds
 
     #method 2
     method2PagesRead = 0
@@ -50,7 +51,7 @@ with open(inputFileName) as inputFile:
     
 
     #do our printing here
-    print "Results (" + str(len(actorIds)) + " total):"
+    print "Results (" + str(len(actorNames)) + " total):"
     for name in actorNames:
     	print "\t" + name
 

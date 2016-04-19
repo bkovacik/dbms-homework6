@@ -49,6 +49,7 @@ def readIndexPage(movieIdLow, movieIdHigh, actorIdLow, actorIdHigh,\
     [newActorIds, nextLeaf, nextLeafLowMovieId] = \
       readLeafPage(movieIdLow, movieIdHigh, actorIdLow, actorIdHigh, startLeaf)
     actorIds += newActorIds
+    print str(nextLeafLowMovieId) + "<" + str(movieIdHigh)
     while nextLeaf and nextLeafLowMovieId<movieIdHigh:
       leavesRead+=1
       [newActorIds, nextLeaf, nextLeafLowMovieId] = \
@@ -63,6 +64,8 @@ def readLeafPage(movieIdLow, movieIdHigh, actorIdLow, actorIdHigh, leafPath):
   newActorIds = []
   nextLeafLowMovieId = None
   with open(leafPath, "r") as leafPage:
+    print "Hi"
+    print leafPath
     for line in leafPage:
       if line == "leaf\n":
         continue
@@ -77,5 +80,6 @@ def readLeafPage(movieIdLow, movieIdHigh, actorIdLow, actorIdHigh, leafPath):
         if movieIdLow <= movieId and movieIdHigh >= movieId and actorIdLow<=actorId and actorIdHigh>=actorId:
           #We have found a valid actor
           newActorIds.append([actorId, pageNumber])
+    print nextLeaf
   return [newActorIds, nextLeaf, nextLeafLowMovieId]
 
