@@ -6,13 +6,13 @@ from queryDB3 import queryDB3
 assert len(sys.argv) == 2
 inputFileName = sys.argv[1]
 
-actorIdRoot = "actor_id_idx/root.txt"
+actorIdRoot = "actors_id_idx/root.txt"
 movieRolesRoot = "movieroles_ma_idx/root.txt"
 
 with open(inputFileName) as inputFile:
   for line in inputFile:
-    print ""
-    print line
+    print "Query: "+ str(line)
+    
     line = line.rstrip().split(",")
 
     [movieIdLow, movieIdHigh, actorIdLow, actorIdHigh] = line
@@ -32,9 +32,43 @@ with open(inputFileName) as inputFile:
     for [actorId, pageNumber] in actors:
       actorIds.add(actorId)
       actorPages.add(pageNumber)
-    print actorIds
 
     #method 1
+    method1IndexPagesRead = 0
+    for actorId in actorIds:
+	    method1IndexPagesRead +=1
+	    minActor = actorId
+	    maxActor = actorId
+	    nextLeaf = None
+	    nextLeafLowMovieId = -1
+	    actorPageNums = set()
+	    with open(actorIdRoot, "r") as actorRoot:
+	    	for line in actorRoot:
+	    		line = line.rstrip()
+	    		if line == "internal":
+	    			continue
+	    		line = line.split(",")
+	    		maxLeafId = int(line[0])
+	    		leafPath = "actors_id_idx/" + line[1]
+	    		if maxLeafId > minActor:
+	    			nextLeaf = leafPath
+	    			break
+	    while nextLeaf and nextLeafLowMovieId < maxActor:
+		    with open(nextLeaf, "r") as leaf:
+		    	method1IndexPagesRead += 1
+		    	for line in leaf:
+		    		line = line.rstrip()
+		    		if line == "leaf":
+		    			continue
+		    		line = line.split(",")
+		    		if len(line)==1:
+		    			nextLeaf = "actors_id_idx/" + line[0]
+		    			break
+		    		actorId = int(line[0])
+		    		actorPageNum = line[1]
+		    		nextLeafLowMovieId = actorId
+		    		if actorId in actorIds:
+		    			actorPageNums.add(actorPageNum)
 
     #method 2
     method2PagesRead = 0
@@ -54,9 +88,15 @@ with open(inputFileName) as inputFile:
     
 
     #do our printing here
+
     print "Results (" + str(len(actorNames)) + " total):"
     for name in actorNames:
     	print "\t" + name
+
+    print "Method 1 total cost: " + str(method1IndexPagesRead + pagesRead + method1IndexPagesRead/2)
+    print "\t" + str(pagesRead) + " page movieroles_ma_idx index"
+    print "\t" + str(method1IndexPagesRead) + " page actors_id_idx index"
+    print "\t" + str(method1IndexPagesRead/2) + " page actors_table" 
 
     print "Method 2 total cost: " + str(method2PagesRead+pagesRead) + " pages"
     print "\t" + str(pagesRead) + " page movieroles_ma_idx index"
@@ -64,4 +104,4 @@ with open(inputFileName) as inputFile:
     queryDB3(int(movieIdLow), int(movieIdHigh), int(actorIdLow), int(actorIdHigh))
     
     #queryDB2(actorIdRoot, movieRolesRoot, movieIdLow, movieIdHigh, actorIdLow, actorIdHigh)
-    
+    print "********************************************************************"
