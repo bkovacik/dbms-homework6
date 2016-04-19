@@ -14,14 +14,10 @@ def queryDB1(movieRolesRoot, movieIdLow, movieIdHigh, actorIdLow,\
       indexMovieIdHigh = int(line[0])
       indexActorIdHigh = int(line[1])
       indexPath = "movieroles_ma_idx/" + line[2]
-      print str(indexMovieIdHigh) + " < " + str(movieIdLow)
-      print str(indexActorIdHigh) + " < " + str(actorIdLow)
       if (indexMovieIdHigh < movieIdLow) or (indexActorIdHigh < actorIdLow):
-      	print "1"
         continue
       else:
         #here is the case where we have found the right index to read
-        print "2"
         pagesRead += 1
         [actorIds, leavesRead] = readIndexPage(movieIdLow,movieIdHigh,\
                                               actorIdLow, actorIdHigh,\
@@ -39,7 +35,6 @@ def readIndexPage(movieIdLow, movieIdHigh, actorIdLow, actorIdHigh,\
     for line in indexPage:
       if line == "internal\n":
         continue
-      print line
       line = line.rstrip().split(",")
       if len(line) == 1:
       	break
@@ -59,7 +54,6 @@ def readIndexPage(movieIdLow, movieIdHigh, actorIdLow, actorIdHigh,\
       [newActorIds, nextLeaf, nextLeafLowMovieId] = \
         readLeafPage(movieIdLow, movieIdHigh, actorIdLow, actorIdHigh, "movieroles_ma_idx/"+nextLeaf)
       actorIds+=newActorIds
-  print "Done"
   return [actorIds, leavesRead]
 
 #t

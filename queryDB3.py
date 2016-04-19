@@ -13,7 +13,7 @@ actorNameNum = 2
 def queryDB3(movieIdLow, movieIdHigh, actorIdLow, actorIdHigh):
   movieCount = 0;
   actorCount = 0;
-  actorList = [];
+  actorSet = set();
   for filename in os.listdir(movieRoles):
     movieCount += 1;
     with open(movieRoles + filename) as f:
@@ -28,8 +28,8 @@ def queryDB3(movieIdLow, movieIdHigh, actorIdLow, actorIdHigh):
 
         if movieIdLow <= movieId and movieIdHigh >= movieId\
           and actorIdLow <= actorId and actorIdHigh >= actorId:
-          actorList.append(actorId)
-  print actorList
+          actorSet.add(int(actorId))
+  #print actorSet
 
   for actorPage in os.listdir(actorTable):
     actorCount += 1
@@ -37,14 +37,14 @@ def queryDB3(movieIdLow, movieIdHigh, actorIdLow, actorIdHigh):
 
       for actor in a:
         tuples = actor.split(',')
-        if int(tuples[actorIdNumA]) in actorList:
-          actorList.remove(tuples[actorIdNumA])
-          print actorList
-        if len(actorList) == 0:
+        if int(tuples[actorIdNumA]) in actorSet:
+          actorSet.remove(int(tuples[actorIdNumA]))
+          #print actorSet
+        if len(actorSet) == 0:
           break;
-    if len(actorList) == 0:
+    if len(actorSet) == 0:
       break;
 #          sys.stdout.write(tuples[actorNameNum] + " " + tuples[actorNameNum+1])
-  print "Method 3 total cost: ", actorCount + movieCount
+  print "Method 3 total cost: " + str(actorCount+movieCount)
   print "\t", movieCount, "page movieroles_table"
   print "\t", actorCount, "page actors_table"

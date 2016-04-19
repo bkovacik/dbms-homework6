@@ -2,7 +2,7 @@ import sys
 import csv
 from queryDB1 import queryDB1
 import os
-#from queryDB3 import queryDB3 
+from queryDB3 import queryDB3 
 assert len(sys.argv) == 2
 inputFileName = sys.argv[1]
 
@@ -30,9 +30,7 @@ with open(inputFileName) as inputFile:
     for [actorId, pageNumber] in actors:
       actorIds.add(actorId)
       actorPages.add(pageNumber)
-    print actorIds
-    for id in actorIds:
-      print id
+    #print actorIds
 
     #method 2
     method2PagesRead = 0
@@ -59,6 +57,7 @@ with open(inputFileName) as inputFile:
     print "Method 2 total cost: " + str(method2PagesRead+pagesRead) + " pages"
     print "\t" + str(pagesRead) + " page movieroles_ma_idx index"
     print "\t" + str(method2PagesRead) + " page actors_table"
+    queryDB3(int(movieIdLow), int(movieIdHigh), int(actorIdLow), int(actorIdHigh))
     
     #queryDB2(actorIdRoot, movieRolesRoot, movieIdLow, movieIdHigh, actorIdLow, actorIdHigh)
-    #queryDB3(int(movieIdLow), int(movieIdHigh), int(actorIdLow), int(actorIdHigh))
+    
